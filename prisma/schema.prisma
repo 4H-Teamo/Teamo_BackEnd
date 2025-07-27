@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
   output   = "../generated/prisma"
@@ -14,7 +8,89 @@ datasource db {
   url      = "postgresql://teamo_pg:teamo_pg@localhost:5432/teamo_pg"
 }
 
-model Users {
-  user_id  String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  nickname String @unique
+// WorkMode, PositionId, Provider : Int로 관리, StackId Int
+
+model Stack {
+  stack_id Int    @id @default(autoincrement())
+  name     String
+  image    String
+}
+
+model Position {
+  position_id Int    @id @default(autoincrement())
+  name        String
+  users       User[]
+}
+
+model User {
+  user_id     String   @id @default(uuid()) @db.Uuid
+  nickname    String?  @unique
+  description String?
+  location    String?
+  image       String?  @db.VarChar(255)
+  github      String?
+  work_mode   Int?
+  beginner    Boolean?
+  is_public   Boolean? @default(false)
+  stacks      Json?
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  position_id Int?
+  position    Position? @relation(fields: [position_id], references: [position_id])
+
+  social Social?
+
+  posts    Post[]
+  comments Comment[]
+  notices  Notice[]
+}
+
+model Post {
+  post_id    String   @id @default(uuid()) @db.Uuid
+  user_id    String   @db.Uuid
+  title      String
+  content    String
+  status     Boolean  @default(true)
+  work_mode  Int
+  end_date   DateTime
+  capacity   Int
+  stacks     Json?
+  positions  Json?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  user     User      @relation(fields: [user_id], references: [user_id])
+  comments Comment[]
+}
+
+model Comment {
+  comment_id String   @id @default(uuid()) @db.Uuid
+  content    String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  user_id String @db.Uuid
+  user    User   @relation(fields: [user_id], references: [user_id])
+  post_id String @db.Uuid
+  post    Post   @relation(fields: [post_id], references: [post_id])
+}
+
+model Social {
+  social_id   String @id @default(uuid()) @db.Uuid
+  user_id     String @unique @db.Uuid // 1대1 관계를 위해 unique 추가
+  provider    Int
+  external_id String
+
+  user User @relation(fields: [user_id], references: [user_id])
+}
+
+model Notice {
+  notice_id  String   @id @default(uuid()) @db.Uuid
+  user_id    String   @db.Uuid
+  is_read    Boolean
+  message    String
+  created_at DateTime @default(now())
+
+  user User @relation(fields: [user_id], references: [user_id])
 }
