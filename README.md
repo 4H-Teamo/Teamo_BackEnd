@@ -28,6 +28,16 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
+# Prisma
+
+```bash
+# init
+$ npx prisma init
+
+# migrate
+$ npx prisma migrate dev --name 'name'
+```
+
 # Run tests
 
 ```bash
