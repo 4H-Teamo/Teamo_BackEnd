@@ -13,6 +13,7 @@ import {
   DateValidationMessage,
   IntArrayValidationMessage,
   IntValidationMessage,
+  MaxIntValidationMessage,
   PositiveIntValidationMessage,
   StringValidationMessage,
   WorkModeValidationMessage,
@@ -49,15 +50,15 @@ export class PostsCreateDto {
 
   @IsArray({ message: IntArrayValidationMessage })
   @ArrayNotEmpty({ message: ArrayEmptyValidationMessage })
-  @IsInt({ each: true })
-  @Min(1, { each: true })
-  @Max(LastStackId, { each: true })
+  @IsInt({ each: true, message: IntArrayValidationMessage })
+  @Min(1, { each: true, message: PositiveIntValidationMessage })
+  @Max(LastStackId, { each: true, message: MaxIntValidationMessage })
   stacks: number[];
 
   @IsArray({ message: IntArrayValidationMessage })
   @ArrayNotEmpty({ message: ArrayEmptyValidationMessage })
-  @IsInt({ each: true })
-  @Min(1, { each: true })
-  @Max(LastPositionId, { each: true })
+  @IsInt({ each: true, message: IntArrayValidationMessage })
+  @Min(1, { each: true, message: PositiveIntValidationMessage })
+  @Max(LastPositionId, { each: true, message: MaxIntValidationMessage })
   positions: number[];
 }
