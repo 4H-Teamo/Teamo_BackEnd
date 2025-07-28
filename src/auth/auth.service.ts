@@ -30,7 +30,7 @@ export class AuthService {
   async signUp() {
     const response = this.prisma.user.findMany({
       where: {
-        user_id: 'test',
+        userId: 'test',
       },
     });
     return response;

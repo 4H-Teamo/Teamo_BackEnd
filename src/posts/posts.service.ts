@@ -18,6 +18,6 @@ export class PostsService {
         updatedAt: 'desc',
       },
     });
-    return 'test';
+    return posts;
   }
 }
