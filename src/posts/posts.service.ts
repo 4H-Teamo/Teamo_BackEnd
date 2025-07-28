@@ -52,7 +52,6 @@ export class PostsService {
     try {
       const checkAuthentication = await this.prisma.post.findUnique({
         where: {
-          userId,
           postId,
         },
       });
