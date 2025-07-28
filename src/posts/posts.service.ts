@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { PostsIndexDto } from './dto/posts-index.dto';
 import { PostsCreateDto } from './dto/posts-create.dto';
@@ -36,6 +40,33 @@ export class PostsService {
           stacks: body.stacks,
           positions: body.positions,
           userId,
+        },
+      });
+      return post;
+    } catch (error) {
+      handlePrismaError(error);
+    }
+  }
+
+  async destroy(postId: string, userId: string) {
+    try {
+      const checkAuthentication = await this.prisma.post.findUnique({
+        where: {
+          userId,
+          postId,
+        },
+      });
+      if (!checkAuthentication) {
+        throw new NotFoundException('게시글 작성자를 찾을 수 없습니다.');
+      }
+
+      if (checkAuthentication.userId !== userId) {
+        throw new UnauthorizedException('작성자만 삭제 요청을 할 수 있습니다.');
+      }
+
+      const post = await this.prisma.post.delete({
+        where: {
+          postId,
         },
       });
       return post;
