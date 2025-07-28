@@ -28,7 +28,7 @@ export class AuthService {
   }
 
   async signUp() {
-    const response = this.prisma.users.findMany({
+    const response = this.prisma.user.findMany({
       where: {
         user_id: 'test',
       },

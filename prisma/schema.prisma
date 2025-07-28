@@ -8,36 +8,40 @@ datasource db {
   url      = "postgresql://teamo_pg:teamo_pg@localhost:5432/teamo_pg"
 }
 
-// WorkMode, PositionId, Provider : Int로 관리, StackId Int
+enum WorkMode {
+  ONLINE
+  OFFLINE
+  BOTH
+}
 
 model Stack {
-  stack_id Int    @id @default(autoincrement())
-  name     String
-  image    String
+  stackId Int    @id @default(autoincrement()) @map("stack_id")
+  name    String
+  image   String
 }
 
 model Position {
-  position_id Int    @id @default(autoincrement())
-  name        String
-  users       User[]
+  positionId Int    @id @default(autoincrement()) @map("position_id")
+  name       String
+  users      User[]
 }
 
 model User {
-  user_id     String   @id @default(uuid()) @db.Uuid
+  userId      String   @id @default(uuid()) @map("user_id") @db.Uuid
   nickname    String?  @unique
   description String?
   location    String?
   image       String?  @db.VarChar(255)
   github      String?
-  work_mode   Int?
+  workMode    Int?     @map("work_mode")
   beginner    Boolean?
-  is_public   Boolean? @default(false)
+  isPublic    Boolean? @default(false) @map("is_public")
   stacks      Json?
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
 
-  position_id Int?
-  position    Position? @relation(fields: [position_id], references: [position_id])
+  positionId Int?      @map("position_id")
+  position   Position? @relation(fields: [positionId], references: [positionId])
 
   social Social?
 
@@ -47,50 +51,50 @@ model User {
 }
 
 model Post {
-  post_id    String   @id @default(uuid()) @db.Uuid
-  user_id    String   @db.Uuid
-  title      String
-  content    String
-  status     Boolean  @default(true)
-  work_mode  Int
-  end_date   DateTime
-  capacity   Int
-  stacks     Json?
-  positions  Json?
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  postId    String   @id @default(uuid()) @map("post_id") @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  title     String
+  content   String
+  status    Boolean  @default(true)
+  workMode  Int      @map("work_mode")
+  endDate   DateTime @map("end_date")
+  capacity  Int
+  stacks    Json?
+  positions Json?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
-  user     User      @relation(fields: [user_id], references: [user_id])
+  user     User      @relation(fields: [userId], references: [userId])
   comments Comment[]
 }
 
 model Comment {
-  comment_id String   @id @default(uuid()) @db.Uuid
-  content    String
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  commentId String   @id @default(uuid()) @map("comment_id") @db.Uuid
+  content   String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
-  user_id String @db.Uuid
-  user    User   @relation(fields: [user_id], references: [user_id])
-  post_id String @db.Uuid
-  post    Post   @relation(fields: [post_id], references: [post_id])
+  userId String @map("user_id") @db.Uuid
+  user   User   @relation(fields: [userId], references: [userId])
+  postId String @map("post_id") @db.Uuid
+  post   Post   @relation(fields: [postId], references: [postId])
 }
 
 model Social {
-  social_id   String @id @default(uuid()) @db.Uuid
-  user_id     String @unique @db.Uuid // 1대1 관계를 위해 unique 추가
-  provider    Int
-  external_id String
+  socialId   String @id @default(uuid()) @map("social_id") @db.Uuid
+  userId     String @unique @map("user_id") @db.Uuid
+  provider   Int
+  externalId String @map("external_id")
 
-  user User @relation(fields: [user_id], references: [user_id])
+  user User @relation(fields: [userId], references: [userId])
 }
 
 model Notice {
-  notice_id  String   @id @default(uuid()) @db.Uuid
-  user_id    String   @db.Uuid
-  is_read    Boolean
-  message    String
-  created_at DateTime @default(now())
+  noticeId  String   @id @default(uuid()) @map("notice_id") @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  isRead    Boolean  @map("is_read")
+  message   String
+  createdAt DateTime @default(now()) @map("created_at")
 
-  user User @relation(fields: [user_id], references: [user_id])
+  user User @relation(fields: [userId], references: [userId])
 }
