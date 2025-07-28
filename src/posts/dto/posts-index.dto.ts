@@ -3,7 +3,7 @@ import { Type } from 'class-transformer';
 import {
   IntValidationMessage,
   PositiveIntValidationMessage,
-} from '../../shared/validators/messages/validation.message';
+} from '../../shared/validators/messages/validation.messages';
 
 export class PostsIndexDto {
   @IsOptional()
