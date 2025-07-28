@@ -26,6 +26,10 @@ export const PositiveIntValidationMessage = (args: ValidationArguments) => {
   return `${args.property}에는 1 이상의 정수가 들어가야합니다.`;
 };
 
+export const MaxIntValidationMessage = (args: ValidationArguments) => {
+  return `${args.property}에는 ${args.constraints[0]} 이하의 숫자가 들어가야합니다.`;
+};
+
 // 문자열
 export const StringValidationMessage = (args: ValidationArguments) => {
   return `${args.property}에 문자열이 들어가야 합니다.`;
