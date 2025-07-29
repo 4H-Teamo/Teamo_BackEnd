@@ -8,7 +8,7 @@ import {
   Max,
   IsOptional,
 } from 'class-validator';
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 import {
   DateValidationMessage,
   IntArrayValidationMessage,

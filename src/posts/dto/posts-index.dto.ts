@@ -4,7 +4,7 @@ import {
   IntValidationMessage,
   PositiveIntValidationMessage,
 } from '../../shared/validators/messages/validation.messages';
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 
 export class PostsIndexDto {
   @ApiPropertyOptional({ example: 1, description: '페이지' })
