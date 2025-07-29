@@ -23,6 +23,11 @@ export class PostsController {
     return this.postsService.index(query);
   }
 
+  @Get(':postId')
+  show(@Param() param: PostsIdDto) {
+    return this.postsService.show(param.postId);
+  }
+
   @Post()
   create(@Body() body: PostsCreateDto) {
     const userId = 'cc7a79ce-3b56-4022-b098-09be5d2f482b'; //TODO : 나중에 guard로 유저아이디를 받는다.
