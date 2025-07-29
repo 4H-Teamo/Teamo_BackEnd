@@ -29,9 +29,22 @@ export class PostsService {
     return posts;
   }
 
+  async show(postId: string) {
+    try {
+      const post = await this.prisma.post.findUnique({
+        where: {
+          postId,
+        },
+      });
+      return post;
+    } catch (error) {
+      handlePrismaError(error);
+    }
+  }
+
   async create(body: PostsCreateDto, userId: string) {
     try {
-      const post = await this.prisma.post.create({
+      const createPost = await this.prisma.post.create({
         data: {
           title: body.title,
           content: body.content,
@@ -43,7 +56,7 @@ export class PostsService {
           userId,
         },
       });
-      return post;
+      return createPost;
     } catch (error) {
       handlePrismaError(error);
     }
@@ -78,12 +91,12 @@ export class PostsService {
         throw new UnauthorizedException('작성자만 삭제 요청을 할 수 있습니다.');
       }
 
-      const post = await this.prisma.post.delete({
+      const destroyPost = await this.prisma.post.delete({
         where: {
           postId,
         },
       });
-      return post;
+      return destroyPost;
     } catch (error) {
       handlePrismaError(error);
     }
