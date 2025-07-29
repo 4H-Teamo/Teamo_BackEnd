@@ -7,6 +7,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { PostsIndexDto } from './dto/posts-index.dto';
 import { PostsCreateDto } from './dto/posts-create.dto';
 import { handlePrismaError } from '../shared/validators/prisma/prisma.exception';
+import { PostsUpdateDto } from './dto/posts-update.dto';
 
 @Injectable()
 export class PostsService {
@@ -43,6 +44,20 @@ export class PostsService {
         },
       });
       return post;
+    } catch (error) {
+      handlePrismaError(error);
+    }
+  }
+
+  async update(postId: string, body: PostsUpdateDto) {
+    try {
+      const postUpdate = await this.prisma.post.update({
+        where: {
+          postId,
+        },
+        data: body,
+      });
+      return postUpdate;
     } catch (error) {
       handlePrismaError(error);
     }
