@@ -64,13 +64,13 @@ export class PostsService {
 
   async update(postId: string, body: PostsUpdateDto) {
     try {
-      const postUpdate = await this.prisma.post.update({
+      const updatePost = await this.prisma.post.update({
         where: {
           postId,
         },
         data: body,
       });
-      return postUpdate;
+      return updatePost;
     } catch (error) {
       handlePrismaError(error);
     }
