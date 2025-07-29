@@ -20,4 +20,19 @@ export class CommentsService {
       handlePrismaError(error);
     }
   }
+
+  async update(userId: string, commentId: string, body: CommentsCreateDto) {
+    try {
+      const updateComment = await this.prisma.comment.update({
+        where: {
+          userId,
+          commentId,
+        },
+        data: body,
+      });
+      return updateComment;
+    } catch (error) {
+      handlePrismaError(error);
+    }
+  }
 }
