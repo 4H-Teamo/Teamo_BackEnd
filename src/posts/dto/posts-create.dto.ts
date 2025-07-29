@@ -40,7 +40,7 @@ export class PostsCreateDto {
   content: string;
 
   @ApiProperty({
-    example: '1',
+    example: 1,
     description: '프로젝트 진행형태(1: 온라인, 2: 오프라인, 3: 상관없음)',
   })
   @IsInt({ message: IntValidationMessage })
@@ -59,7 +59,7 @@ export class PostsCreateDto {
   @IsDateString({}, { message: DateValidationMessage })
   endDate: string;
 
-  @ApiProperty({ example: '5', description: '모집 인원' })
+  @ApiProperty({ example: 5, description: '모집 인원' })
   @IsInt({ message: IntValidationMessage })
   @IsPositive({
     message: PositiveIntValidationMessage,
@@ -67,7 +67,7 @@ export class PostsCreateDto {
   capacity: number;
 
   @ApiProperty({
-    example: '[1, 2, 3]',
+    example: [1, 2, 3],
     description: '기술 스택들은 번호로 된 배열',
   })
   @IsArray({ message: IntArrayValidationMessage })
@@ -77,7 +77,7 @@ export class PostsCreateDto {
   @Max(LastStackId, { each: true, message: MaxIntValidationMessage })
   stacks: number[];
 
-  @ApiProperty({ example: '[1, 2]', description: '포지션들은 번호로 된 배열' })
+  @ApiProperty({ example: [1, 2], description: '포지션들은 번호로 된 배열' })
   @IsArray({ message: IntArrayValidationMessage })
   @ArrayNotEmpty({ message: ArrayEmptyValidationMessage })
   @IsInt({ each: true, message: IntArrayValidationMessage })
