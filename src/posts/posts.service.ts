@@ -35,6 +35,17 @@ export class PostsService {
         where: {
           postId,
         },
+        include: {
+          _count: true,
+          comments: {
+            select: {
+              commentId: true,
+              userId: true,
+              content: true,
+              createdAt: true,
+            },
+          },
+        },
       });
       return post;
     } catch (error) {
