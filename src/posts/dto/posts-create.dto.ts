@@ -3,14 +3,12 @@ import {
   IsInt,
   IsArray,
   IsDateString,
-  ArrayNotEmpty,
   IsPositive,
   Min,
   Max,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import {
-  ArrayEmptyValidationMessage,
   DateValidationMessage,
   IntArrayValidationMessage,
   IntValidationMessage,
@@ -71,7 +69,6 @@ export class PostsCreateDto {
     description: '기술 스택들은 번호로 된 배열',
   })
   @IsArray({ message: IntArrayValidationMessage })
-  @ArrayNotEmpty({ message: ArrayEmptyValidationMessage })
   @IsInt({ each: true, message: IntArrayValidationMessage })
   @Min(1, { each: true, message: PositiveIntValidationMessage })
   @Max(LastStackId, { each: true, message: MaxIntValidationMessage })
@@ -79,7 +76,6 @@ export class PostsCreateDto {
 
   @ApiProperty({ example: [1, 2], description: '포지션들은 번호로 된 배열' })
   @IsArray({ message: IntArrayValidationMessage })
-  @ArrayNotEmpty({ message: ArrayEmptyValidationMessage })
   @IsInt({ each: true, message: IntArrayValidationMessage })
   @Min(1, { each: true, message: PositiveIntValidationMessage })
   @Max(LastPositionId, { each: true, message: MaxIntValidationMessage })
