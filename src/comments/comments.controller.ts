@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Param, Patch } from '@nestjs/common';
+import { Controller, Post, Body, Param, Patch, Delete } from '@nestjs/common';
 import { CommentsService } from './comments.service';
 import { PostsIdDto } from '../posts/dto/posts-id.dto';
 import { CommentsCreateDto } from './dto/comments-create.dto';
@@ -18,5 +18,11 @@ export class CommentsController {
   update(@Param() param: CommentsIdDto, @Body() body: CommentsCreateDto) {
     const userId = 'cc7a79ce-3b56-4022-b098-09be5d2f482b'; //TODO : 나중에 guard로 유저아이디를 받는다.
     return this.commentsService.update(userId, param.commentId, body);
+  }
+
+  @Delete('comments/:commentId')
+  destroy(@Param() param: CommentsIdDto) {
+    const userId = 'cc7a79ce-3b56-4022-b098-09be5d2f482b'; //TODO : 나중에 guard로 유저아이디를 받는다.
+    return this.commentsService.destroy(userId, param.commentId);
   }
 }

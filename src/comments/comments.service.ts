@@ -35,4 +35,18 @@ export class CommentsService {
       handlePrismaError(error);
     }
   }
+
+  async destroy(userId: string, commentId: string) {
+    try {
+      const destroyComment = await this.prisma.comment.delete({
+        where: {
+          userId,
+          commentId,
+        },
+      });
+      return destroyComment;
+    } catch (error) {
+      handlePrismaError(error);
+    }
+  }
 }
