@@ -38,6 +38,13 @@ export class PostCreateDto {
   content: string;
 
   @ApiProperty({
+    example: '헤네시스',
+    description: '지역 내용',
+  })
+  @IsString({ message: StringValidationMessage })
+  location: string;
+
+  @ApiProperty({
     example: 1,
     description: '프로젝트 진행형태(1: 온라인, 2: 오프라인, 3: 상관없음)',
   })
