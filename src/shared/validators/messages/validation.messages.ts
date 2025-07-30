@@ -43,3 +43,11 @@ export const UuidValidationMessage = (args: ValidationArguments) => {
 export const DateValidationMessage = (args: ValidationArguments) => {
   return `${args.property}에 ISO 형식의 문자열이 들어가야합니다. date.toISOString()으로 변환 가능합니다.`;
 };
+
+export const BooleanValidationMessage = (args: ValidationArguments) => {
+  return `${args.property}에는 true 또는 false가 들어가야 합니다.`;
+};
+
+export const UrlValidationMessage = (args: ValidationArguments) => {
+  return `${args.property}에 올바른 URL 형식이 들어가야 합니다.`;
+};

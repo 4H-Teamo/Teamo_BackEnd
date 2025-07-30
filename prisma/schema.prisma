@@ -36,7 +36,7 @@ model User {
   workMode    Int?     @map("work_mode")
   beginner    Boolean?
   isPublic    Boolean? @default(false) @map("is_public")
-  stacks      Json?
+  stacks      Int[]
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
