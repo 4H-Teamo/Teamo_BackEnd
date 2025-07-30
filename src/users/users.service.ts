@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { UsersUpdateDto } from './dto/users-update.dto';
+import { UserUpdateDto } from './dto/users-update.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { handlePrismaError } from 'src/shared/validators/prisma/prisma.exception';
 import { UsersIndexDto } from './dto/users-index.dto';
@@ -48,7 +48,7 @@ export class UsersService {
   }
 
   // 마이페이지 - 유저 정보 수정
-  async update(body: UsersUpdateDto) {
+  async update(body: UserUpdateDto) {
     const userId = '9af16a94-488a-4224-8d03-9343e8519541'; //TODO : 나중에 guard로 유저아이디를 받는다.
     try {
       const updateUser = await this.prisma.user.update({
