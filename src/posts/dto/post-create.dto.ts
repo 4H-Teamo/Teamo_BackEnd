@@ -22,7 +22,7 @@ import {
   LastStackId,
 } from '../../shared/validators/values/validation.values';
 
-export class PostsCreateDto {
+export class PostCreateDto {
   @ApiProperty({
     example: '프로젝트 모집 플랫폼 프로젝트 인원 모집',
     description: '게시글 제목',
