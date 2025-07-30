@@ -31,7 +31,7 @@ export class UsersController {
   }
 
   @Delete()
-  remove() {
+  destroy() {
     return this.usersService.destroy();
   }
 
