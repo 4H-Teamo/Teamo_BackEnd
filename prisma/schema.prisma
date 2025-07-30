@@ -55,6 +55,7 @@ model Post {
   userId    String   @map("user_id") @db.Uuid
   title     String
   content   String
+  location  String
   status    Boolean  @default(true)
   workMode  Int      @map("work_mode")
   endDate   DateTime @map("end_date")
