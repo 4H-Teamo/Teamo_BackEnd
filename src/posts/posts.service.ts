@@ -31,11 +31,37 @@ export class PostsService {
 
   async show(postId: string) {
     try {
+      //updatedAt을 빼고 전달
       const post = await this.prisma.post.findUnique({
-        where: {
-          postId,
+        where: { postId },
+        select: {
+          postId: true,
+          userId: true,
+          title: true,
+          content: true,
+          status: true,
+          workMode: true,
+          endDate: true,
+          capacity: true,
+          stacks: true,
+          positions: true,
+          createdAt: true,
+          _count: {
+            select: {
+              comments: true,
+            },
+          },
+          comments: {
+            select: {
+              commentId: true,
+              userId: true,
+              content: true,
+              createdAt: true,
+            },
+          },
         },
       });
+
       return post;
     } catch (error) {
       handlePrismaError(error);

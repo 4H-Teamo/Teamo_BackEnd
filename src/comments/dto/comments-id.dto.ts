@@ -1,12 +1,12 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { IsUUID } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 import { UuidValidationMessage } from '../../shared/validators/messages/validation.messages';
 
-export class PostIdDto {
+export class CommentsIdDto {
   @ApiProperty({
-    example: 'ABCDE-... (게시글 uuid)',
-    description: '게시글 아이디',
+    example: 'Comments Id (UUID)',
+    description: 'uuid',
   })
   @IsUUID(4, { message: UuidValidationMessage })
-  postId: string;
+  commentId: string;
 }
