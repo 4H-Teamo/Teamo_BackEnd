@@ -59,8 +59,8 @@ model Post {
   workMode  Int      @map("work_mode")
   endDate   DateTime @map("end_date")
   capacity  Int
-  stacks    Json?
-  positions Json?
+  stacks    Int[]
+  positions Int[]
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
