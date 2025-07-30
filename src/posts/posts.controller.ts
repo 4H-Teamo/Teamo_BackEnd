@@ -10,8 +10,8 @@ import {
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { PostsIndexDto } from './dto/posts-index.dto';
-import { PostsCreateDto } from './dto/posts-create.dto';
-import { PostsIdDto } from './dto/posts-id.dto';
+import { PostCreateDto } from './dto/post-create.dto';
+import { PostIdDto } from './dto/post-id.dto';
 import { PostsUpdateDto } from './dto/posts-update.dto';
 
 @Controller('posts')
@@ -24,23 +24,23 @@ export class PostsController {
   }
 
   @Get(':postId')
-  show(@Param() param: PostsIdDto) {
+  show(@Param() param: PostIdDto) {
     return this.postsService.show(param.postId);
   }
 
   @Post()
-  create(@Body() body: PostsCreateDto) {
+  create(@Body() body: PostCreateDto) {
     const userId = 'cc7a79ce-3b56-4022-b098-09be5d2f482b'; //TODO : 나중에 guard로 유저아이디를 받는다.
     return this.postsService.create(body, userId);
   }
 
   @Patch(':postId')
-  update(@Param() param: PostsIdDto, @Body() body: PostsUpdateDto) {
+  update(@Param() param: PostIdDto, @Body() body: PostsUpdateDto) {
     return this.postsService.update(param.postId, body);
   }
 
   @Delete(':postId')
-  destroy(@Param() param: PostsIdDto) {
+  destroy(@Param() param: PostIdDto) {
     const userId = 'cc7a79ce-3b56-4022-b098-09be5d2f482b'; //TODO : 나중에 guard로 유저아이디를 받는다.
     return this.postsService.destroy(param.postId, userId);
   }

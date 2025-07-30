@@ -1,11 +1,7 @@
-import {
-  Injectable,
-  NotFoundException,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { PostsIndexDto } from './dto/posts-index.dto';
-import { PostsCreateDto } from './dto/posts-create.dto';
+import { PostCreateDto } from './dto/post-create.dto';
 import { handlePrismaError } from '../shared/validators/prisma/prisma.exception';
 import { PostsUpdateDto } from './dto/posts-update.dto';
 
@@ -19,14 +15,18 @@ export class PostsService {
 
     const skip = (pageNumber - 1) * limitNumber;
 
-    const posts = await this.prisma.post.findMany({
-      skip,
-      take: limitNumber,
-      orderBy: {
-        updatedAt: 'desc',
-      },
-    });
-    return posts;
+    try {
+      const posts = await this.prisma.post.findMany({
+        skip,
+        take: limitNumber,
+        orderBy: {
+          updatedAt: 'desc',
+        },
+      });
+      return posts;
+    } catch (error) {
+      handlePrismaError(error);
+    }
   }
 
   async show(postId: string) {
@@ -42,7 +42,7 @@ export class PostsService {
     }
   }
 
-  async create(body: PostsCreateDto, userId: string) {
+  async create(body: PostCreateDto, userId: string) {
     try {
       const createPost = await this.prisma.post.create({
         data: {
@@ -78,22 +78,11 @@ export class PostsService {
 
   async destroy(postId: string, userId: string) {
     try {
-      const checkAuthentication = await this.prisma.post.findUnique({
-        where: {
-          postId,
-        },
-      });
-      if (!checkAuthentication) {
-        throw new NotFoundException('게시글 작성자를 찾을 수 없습니다.');
-      }
-
-      if (checkAuthentication.userId !== userId) {
-        throw new UnauthorizedException('작성자만 삭제 요청을 할 수 있습니다.');
-      }
-
+      // 유저아이디와 포스트아이디가 일치 => 작성자임.
       const destroyPost = await this.prisma.post.delete({
         where: {
           postId,
+          userId,
         },
       });
       return destroyPost;
