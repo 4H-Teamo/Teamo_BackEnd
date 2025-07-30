@@ -43,3 +43,7 @@ export const DateValidationMessage = (args: ValidationArguments) => {
 export const BooleanValidationMessage = (args: ValidationArguments) => {
   return `${args.property}에는 true 또는 false가 들어가야 합니다.`;
 };
+
+export const UrlValidationMessage = (args: ValidationArguments) => {
+  return `${args.property}에 올바른 URL 형식이 들어가야 합니다.`;
+};

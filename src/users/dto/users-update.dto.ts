@@ -18,9 +18,13 @@ import {
   MaxIntValidationMessage,
   PositiveIntValidationMessage,
   StringValidationMessage,
+  UrlValidationMessage,
   WorkModeValidationMessage,
 } from 'src/shared/validators/messages/validation.messages';
-import { LastPositionId } from 'src/shared/validators/values/validation.values';
+import {
+  LastPositionId,
+  LastStackId,
+} from 'src/shared/validators/values/validation.values';
 
 export class UsersUpdateDto {
   @IsOptional()
@@ -41,8 +45,8 @@ export class UsersUpdateDto {
   image?: string;
 
   @IsOptional()
-  @IsString()
-  @IsUrl()
+  @IsString({ message: StringValidationMessage })
+  @IsUrl({}, { message: UrlValidationMessage })
   github?: string;
 
   @IsOptional()
@@ -67,7 +71,9 @@ export class UsersUpdateDto {
   @IsOptional()
   @IsArray({ message: IntArrayValidationMessage })
   @ArrayNotEmpty({ message: ArrayEmptyValidationMessage })
-  @IsInt({ each: true })
+  @IsInt({ each: true, message: ArrayEmptyValidationMessage })
+  @Min(1, { each: true, message: PositiveIntValidationMessage })
+  @Max(LastStackId, { each: true, message: MaxIntValidationMessage })
   @Type(() => Number)
   stacks?: number[];
 
