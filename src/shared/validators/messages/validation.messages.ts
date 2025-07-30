@@ -35,6 +35,10 @@ export const StringValidationMessage = (args: ValidationArguments) => {
   return `${args.property}에 문자열이 들어가야 합니다.`;
 };
 
+export const UuidValidationMessage = (args: ValidationArguments) => {
+  return `${args.property}는 uuid 문자열이 들어가야 합니다.`;
+};
+
 // 날짜
 export const DateValidationMessage = (args: ValidationArguments) => {
   return `${args.property}에 ISO 형식의 문자열이 들어가야합니다. date.toISOString()으로 변환 가능합니다.`;
