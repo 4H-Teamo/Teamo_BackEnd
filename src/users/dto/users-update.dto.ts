@@ -26,7 +26,7 @@ import {
   LastStackId,
 } from 'src/shared/validators/values/validation.values';
 
-export class UsersUpdateDto {
+export class UserUpdateDto {
   @IsOptional()
   @IsString({ message: StringValidationMessage })
   nickname?: string;
