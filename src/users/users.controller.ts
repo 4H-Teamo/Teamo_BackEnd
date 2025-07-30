@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UsersIndexDto } from './dto/users-index.dto';
-import { UsersUpdateDto } from './dto/users-update.dto';
+import { UserUpdateDto } from './dto/users-update.dto';
 
 @Controller('users')
 export class UsersController {
@@ -26,7 +26,7 @@ export class UsersController {
   }
 
   @Patch()
-  update(@Body() body: UsersUpdateDto) {
+  update(@Body() body: UserUpdateDto) {
     return this.usersService.update(body);
   }
 
