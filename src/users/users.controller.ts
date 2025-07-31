@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Get,
-  Body,
-  Patch,
-  Delete,
-  Query,
-  Post,
-} from '@nestjs/common';
+import { Controller, Get, Body, Patch, Delete, Query } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UsersIndexDto } from './dto/users-index.dto';
 import { UserUpdateDto } from './dto/users-update.dto';
@@ -33,10 +25,5 @@ export class UsersController {
   @Delete()
   destroy() {
     return this.usersService.destroy();
-  }
-
-  @Post()
-  create() {
-    return this.usersService.create();
   }
 }

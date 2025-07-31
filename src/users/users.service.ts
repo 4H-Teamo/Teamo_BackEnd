@@ -3,6 +3,7 @@ import { UserUpdateDto } from './dto/users-update.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { handlePrismaError } from 'src/shared/validators/prisma/prisma.exception';
 import { UsersIndexDto } from './dto/users-index.dto';
+import { UserCreateDto } from './dto/users-create.dto';
 
 @Injectable()
 export class UsersService {
@@ -88,16 +89,26 @@ export class UsersService {
   }
 
   // 유저 생성
-  async create() {
-    // TODO : nickname 정보 카카오 로그인 후 받아오기
+  async create(data: UserCreateDto) {
     try {
-      const createUser = await this.prisma.user.create({
-        data: {
-          nickname: '테스트',
-        },
-      });
+      const user = await this.prisma.$transaction(async (tx) => {
+        const createUser = await tx.user.create({
+          data: {
+            nickname: data.nickname,
+          },
+        });
 
-      return createUser;
+        await tx.social.create({
+          data: {
+            userId: createUser.userId,
+            externalId: data.kakaoId,
+            provider: data.provider,
+          },
+        });
+
+        return createUser;
+      });
+      return user;
     } catch (error) {
       handlePrismaError(error);
     }
