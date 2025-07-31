@@ -84,7 +84,7 @@ model Social {
   socialId   String @id @default(uuid()) @map("social_id") @db.Uuid
   userId     String @unique @map("user_id") @db.Uuid
   provider   Int
-  externalId String @map("external_id")
+  externalId String @unique @map("external_id")
 
   user User @relation(fields: [userId], references: [userId])
 }
