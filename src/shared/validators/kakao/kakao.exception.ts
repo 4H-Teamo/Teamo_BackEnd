@@ -3,27 +3,30 @@ import {
   UnauthorizedException,
   InternalServerErrorException,
 } from '@nestjs/common';
+import { KakaoErrorResponse } from 'src/auth/interface/kakao.interfaces';
 
-interface KakaoErrorResponse {
-  error: string;
-  error_description: string;
-  error_code?: string;
-  code?: number;
-  msg?: string;
+export class KakaoApiException extends Error {
+  constructor(public readonly kakaoError: KakaoErrorResponse) {
+    super(kakaoError.error_description || 'Kakao API 처리 중 에러 발생');
+    this.name = 'KakaoApiException';
+  }
 }
 
-function isKakaoErrorResponse(arg: any): arg is KakaoErrorResponse {
+export function isKakaoErrorResponse(arg: any): arg is KakaoErrorResponse {
   return (
     typeof arg === 'object' &&
     arg !== null &&
-    typeof (arg as KakaoErrorResponse).error === 'string' &&
-    typeof (arg as KakaoErrorResponse).error_description === 'string'
+    ((typeof (arg as KakaoErrorResponse).error === 'string' &&
+      typeof (arg as KakaoErrorResponse).error_description === 'string') ||
+      (typeof (arg as KakaoErrorResponse).msg === 'string' &&
+        typeof (arg as KakaoErrorResponse).code === 'number'))
   );
 }
 
 export function handleKakaoApiError(error: unknown): never {
-  if (isKakaoErrorResponse(error)) {
-    const errorCode = error.error_code || error.code;
+  if (error instanceof KakaoApiException) {
+    const kakaoError = error.kakaoError;
+    const errorCode = kakaoError.error_code || kakaoError.code;
 
     switch (errorCode) {
       case 'KOE320':
