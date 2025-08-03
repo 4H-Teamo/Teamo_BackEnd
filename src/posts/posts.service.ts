@@ -39,6 +39,7 @@ export class PostsService {
           userId: true,
           title: true,
           content: true,
+          location: true,
           status: true,
           workMode: true,
           endDate: true,
@@ -72,13 +73,7 @@ export class PostsService {
     try {
       const createPost = await this.prisma.post.create({
         data: {
-          title: body.title,
-          content: body.content,
-          workMode: body.workMode,
-          endDate: body.endDate,
-          capacity: body.capacity,
-          stacks: body.stacks,
-          positions: body.positions,
+          ...body,
           userId,
         },
       });

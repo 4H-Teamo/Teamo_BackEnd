@@ -8,7 +8,7 @@ import {
   Max,
   IsOptional,
 } from 'class-validator';
-import { ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   DateValidationMessage,
   IntArrayValidationMessage,
@@ -39,6 +39,14 @@ export class PostsUpdateDto {
   @IsString({ message: StringValidationMessage })
   @IsOptional()
   content?: string;
+
+  @ApiProperty({
+    example: '헤네시스',
+    description: '지역 내용',
+  })
+  @IsString({ message: StringValidationMessage })
+  @IsOptional()
+  location?: string;
 
   @ApiPropertyOptional({
     example: 1,
