@@ -14,6 +14,8 @@ import {
   KakaoErrorResponse,
   KakaoUserInfo,
 } from './interface/kakao.interfaces';
+import { JwtService } from '@nestjs/jwt';
+import { Response } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -21,6 +23,7 @@ export class AuthService {
     private prisma: PrismaService,
     private readonly configService: ConfigService,
     private readonly usersService: UsersService,
+    private readonly jwtService: JwtService,
   ) {}
 
   async show(externalId: string) {
@@ -104,14 +107,12 @@ export class AuthService {
     }
   }
 
-  async kakaoLogin(userInfo: KakaoUserInfo) {
+  async kakaoLogin(userInfo: KakaoUserInfo, res: Response) {
     let user: User;
     const kakaoId = userInfo.id.toString();
     try {
-      // 가입된 사용자인지 정보 조회
       const existUser = await this.show(kakaoId);
       if (existUser) {
-        // 이미 가입된 사용자
         user = existUser;
       } else {
         user = await this.usersService.create({
@@ -121,13 +122,54 @@ export class AuthService {
         });
       }
 
-      // 토큰 발급
+      const accessToken = this.getAccessToken(user);
+      this.setRefreshToken(user, res);
+
       return {
         userData: user,
-        token: '',
+        token: accessToken,
       };
     } catch (error) {
       handlePrismaError(error);
     }
+  }
+
+  getAccessToken(user: User) {
+    return this.jwtService.sign(
+      {
+        userId: user.userId,
+        nickname: user.nickname,
+      },
+      {
+        secret: this.configService.getOrThrow<string>(
+          'JWT_ACCESS_TOKEN_SECRET',
+        ),
+        expiresIn: '5m',
+      },
+    );
+  }
+
+  setRefreshToken(user: User, res: Response) {
+    const refreshToken = this.jwtService.sign(
+      {
+        userId: user.userId,
+        nickname: user.nickname,
+      },
+      {
+        secret: this.configService.getOrThrow<string>(
+          'JWT_REFRESH_TOKEN_SECRET',
+        ),
+        expiresIn: '2w',
+      },
+    );
+
+    const twoWeeksInMs = 14 * 24 * 60 * 60 * 1000;
+
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: this.configService.get<string>('SECURE_MODE') === 'production',
+      sameSite: 'strict',
+      maxAge: twoWeeksInMs,
+    });
   }
 }
