@@ -153,7 +153,6 @@ export class AuthService {
     const refreshToken = this.jwtService.sign(
       {
         userId: user.userId,
-        nickname: user.nickname,
       },
       {
         secret: this.configService.getOrThrow<string>(
