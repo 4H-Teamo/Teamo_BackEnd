@@ -9,7 +9,7 @@ interface RequestWithCookies extends Request {
   };
 }
 
-export class JwtRefreshStretagy extends PassportStrategy(Strategy, 'refresh') {
+export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'refresh') {
   constructor(private configService: ConfigService) {
     super({
       jwtFromRequest: (req: RequestWithCookies) => {
