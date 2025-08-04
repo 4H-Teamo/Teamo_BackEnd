@@ -2,6 +2,7 @@ import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-jwt';
 import { Request } from 'express';
+import { Injectable } from '@nestjs/common';
 
 interface RequestWithCookies extends Request {
   cookies: {
@@ -9,6 +10,7 @@ interface RequestWithCookies extends Request {
   };
 }
 
+@Injectable()
 export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'refresh') {
   constructor(private configService: ConfigService) {
     super({
