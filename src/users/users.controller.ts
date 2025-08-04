@@ -1,7 +1,18 @@
-import { Controller, Get, Body, Patch, Delete, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Body,
+  Patch,
+  Delete,
+  Query,
+  UseGuards,
+  Req,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UsersIndexDto } from './dto/users-index.dto';
 import { UserUpdateDto } from './dto/users-update.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { RequestWithUser } from 'src/shared/interfaces/auth.interface';
 
 @Controller('users')
 export class UsersController {
@@ -12,18 +23,21 @@ export class UsersController {
     return this.usersService.index(query);
   }
 
+  @UseGuards(AuthGuard('access'))
   @Get('me')
-  show() {
-    return this.usersService.show();
+  show(@Req() req: RequestWithUser) {
+    return this.usersService.show(req.user.userId);
   }
 
+  @UseGuards(AuthGuard('access'))
   @Patch()
-  update(@Body() body: UserUpdateDto) {
-    return this.usersService.update(body);
+  update(@Body() body: UserUpdateDto, @Req() req: RequestWithUser) {
+    return this.usersService.update(body, req.user.userId);
   }
 
+  @UseGuards(AuthGuard('access'))
   @Delete()
-  destroy() {
-    return this.usersService.destroy();
+  destroy(@Req() req: RequestWithUser) {
+    return this.usersService.destroy(req.user.userId);
   }
 }
