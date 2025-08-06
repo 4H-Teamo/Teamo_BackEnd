@@ -1,0 +1,101 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../generated/prisma-postgres"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum WorkMode {
+  ONLINE
+  OFFLINE
+  BOTH
+}
+
+model Stack {
+  stackId Int    @id @default(autoincrement()) @map("stack_id")
+  name    String
+  image   String
+}
+
+model Position {
+  positionId Int    @id @default(autoincrement()) @map("position_id")
+  name       String
+  users      User[]
+}
+
+model User {
+  userId      String   @id @default(uuid()) @map("user_id") @db.Uuid
+  nickname    String?  @unique
+  description String?
+  location    String?
+  image       String?  @db.VarChar(255)
+  github      String?
+  workMode    Int?     @map("work_mode")
+  beginner    Boolean?
+  isPublic    Boolean? @default(false) @map("is_public")
+  stacks      Int[]
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  positionId Int?      @map("position_id")
+  position   Position? @relation(fields: [positionId], references: [positionId])
+
+  social Social?
+
+  posts    Post[]
+  comments Comment[]
+  notices  Notice[]
+}
+
+model Post {
+  postId    String   @id @default(uuid()) @map("post_id") @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  title     String
+  content   String
+  location  String
+  status    Boolean  @default(true)
+  workMode  Int      @map("work_mode")
+  endDate   DateTime @map("end_date")
+  capacity  Int
+  stacks    Int[]
+  positions Int[]
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user     User      @relation(fields: [userId], references: [userId])
+  comments Comment[]
+}
+
+model Comment {
+  commentId String   @id @default(uuid()) @map("comment_id") @db.Uuid
+  content   String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  userId String @map("user_id") @db.Uuid
+  user   User   @relation(fields: [userId], references: [userId])
+  postId String @map("post_id") @db.Uuid
+  post   Post   @relation(fields: [postId], references: [postId])
+}
+
+model Social {
+  socialId   String @id @default(uuid()) @map("social_id") @db.Uuid
+  userId     String @unique @map("user_id") @db.Uuid
+  provider   Int
+  externalId String @unique @map("external_id")
+
+  user User @relation(fields: [userId], references: [userId])
+}
+
+model Notice {
+  noticeId  String   @id @default(uuid()) @map("notice_id") @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  isRead    Boolean  @default(false) @map("is_read")
+  message   String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [userId])
+}
