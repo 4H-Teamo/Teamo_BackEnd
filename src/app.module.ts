@@ -7,6 +7,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { PostsModule } from './posts/posts.module';
 import { UsersModule } from './users/users.module';
 import { CommentsModule } from './comments/comments.module';
+import { NoticesModule } from './notices/notices.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { CommentsModule } from './comments/comments.module';
     PostsModule,
     UsersModule,
     CommentsModule,
+    NoticesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

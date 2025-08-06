@@ -93,7 +93,7 @@ model Social {
 model Notice {
   noticeId  String   @id @default(uuid()) @map("notice_id") @db.Uuid
   userId    String   @map("user_id") @db.Uuid
-  isRead    Boolean  @map("is_read")
+  isRead    Boolean  @default(false) @map("is_read")
   message   String
   createdAt DateTime @default(now()) @map("created_at")
 
