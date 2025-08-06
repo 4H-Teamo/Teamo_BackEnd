@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { handlePrismaError } from 'src/shared/validators/prisma/prisma.exception';
 import { ConfigService } from '@nestjs/config';
@@ -47,6 +47,12 @@ export class AuthService {
       this.configService.get<string>('KAKAO_RESTAPI_KEY') || '';
     const KAKAO_REDIRECT_URI =
       this.configService.get<string>('KAKAO_REDIRECT_URI') || '';
+
+    if (!KAKAO_RESTAPI_KEY || !KAKAO_REDIRECT_URI) {
+      throw new InternalServerErrorException(
+        'Key 또는 Redirect URI가 설정되지 않았습니다. 환경 변수를 확인해주세요.',
+      );
+    }
 
     const config = {
       grant_type: 'authorization_code',
