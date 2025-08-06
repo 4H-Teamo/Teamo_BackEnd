@@ -3,6 +3,7 @@ import { UserUpdateDto } from './dto/users-update.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { handlePrismaError } from 'src/shared/validators/prisma/prisma.exception';
 import { UsersIndexDto } from './dto/users-index.dto';
+import { UserCreateDto } from './dto/users-create.dto';
 
 @Injectable()
 export class UsersService {
@@ -33,8 +34,7 @@ export class UsersService {
   }
 
   // 마이페이지 - 특정 유저 조회
-  async show() {
-    const userId = '9af16a94-488a-4224-8d03-9343e8519541'; //TODO : 나중에 guard로 유저아이디를 받는다.
+  async show(userId: string) {
     try {
       const showUser = await this.prisma.user.findUnique({
         where: {
@@ -48,8 +48,7 @@ export class UsersService {
   }
 
   // 마이페이지 - 유저 정보 수정
-  async update(body: UserUpdateDto) {
-    const userId = '9af16a94-488a-4224-8d03-9343e8519541'; //TODO : 나중에 guard로 유저아이디를 받는다.
+  async update(body: UserUpdateDto, userId: string) {
     try {
       const updateUser = await this.prisma.user.update({
         where: { userId },
@@ -73,8 +72,7 @@ export class UsersService {
   }
 
   // 유저 탈퇴
-  async destroy() {
-    const userId = '9af16a94-488a-4224-8d03-9343e8519541'; //TODO : 나중에 guard로 유저아이디를 받는다.
+  async destroy(userId: string) {
     try {
       const destroyUser = await this.prisma.user.delete({
         where: {
@@ -88,16 +86,26 @@ export class UsersService {
   }
 
   // 유저 생성
-  async create() {
-    // TODO : nickname 정보 카카오 로그인 후 받아오기
+  async create(data: UserCreateDto) {
     try {
-      const createUser = await this.prisma.user.create({
-        data: {
-          nickname: '테스트',
-        },
-      });
+      const user = await this.prisma.$transaction(async (tx) => {
+        const createUser = await tx.user.create({
+          data: {
+            nickname: data.nickname,
+          },
+        });
 
-      return createUser;
+        await tx.social.create({
+          data: {
+            userId: createUser.userId,
+            externalId: data.kakaoId,
+            provider: data.provider,
+          },
+        });
+
+        return createUser;
+      });
+      return user;
     } catch (error) {
       handlePrismaError(error);
     }
