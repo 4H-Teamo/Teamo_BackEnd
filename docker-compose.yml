@@ -11,6 +11,29 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+  
+  mongodb:
+    image: mongo:7
+    container_name: teamo_mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodata:/data/db
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
+  
+  mongo-express:
+    image: mongo-express
+    container_name: teamo_mongo_express
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://mongodb:27017/
+      ME_CONFIG_BASICAUTH: false
+    depends_on:
+      - mongodb
+  
   adminer:
     image: adminer
     restart: always
@@ -18,3 +41,4 @@ services:
       - 8080:8080
 volumes:
   pgdata:
+  mongodata:
