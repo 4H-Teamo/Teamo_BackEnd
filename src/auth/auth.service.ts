@@ -8,7 +8,7 @@ import {
   KakaoApiException,
 } from 'src/shared/validators/kakao/kakao.exception';
 import { UsersService } from 'src/users/users.service';
-import { User } from 'generated/prisma';
+import { User } from 'generated/prisma-postgres';
 import {
   KakaoAccessToken,
   KakaoErrorResponse,
