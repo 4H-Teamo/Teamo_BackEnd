@@ -6,3 +6,9 @@ export interface RequestWithUser extends Request {
     nickname?: string;
   };
 }
+
+export interface RequestWithCookies extends Request {
+  cookies: {
+    refreshToken?: string;
+  };
+}

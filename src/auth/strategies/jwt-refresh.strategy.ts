@@ -1,14 +1,8 @@
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-jwt';
-import { Request } from 'express';
 import { Injectable } from '@nestjs/common';
-
-interface RequestWithCookies extends Request {
-  cookies: {
-    refreshToken?: string;
-  };
-}
+import { RequestWithCookies } from 'src/shared/interfaces/auth.interface';
 
 @Injectable()
 export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'refresh') {
