@@ -1,11 +1,11 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
+  output   = "../../generated/prisma-postgres"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://teamo_pg:teamo_pg@localhost:5432/teamo_pg"
+  url      = env("DATABASE_URL")
 }
 
 enum WorkMode {
