@@ -1,7 +1,8 @@
 name: Dispatch Infra Deploy (Backend)
 
 on:
-  push:
+  pull_request:
+    types: [closed]
     branches: [main]
 
 jobs:
