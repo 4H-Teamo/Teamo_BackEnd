@@ -14,8 +14,8 @@ import {
   KakaoErrorResponse,
   KakaoUserInfo,
 } from './interface/kakao.interfaces';
-import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
+import { TokenService } from './token.service';
 
 @Injectable()
 export class AuthService {
@@ -23,7 +23,7 @@ export class AuthService {
     private prisma: PrismaService,
     private readonly configService: ConfigService,
     private readonly usersService: UsersService,
-    private readonly jwtService: JwtService,
+    private readonly tokenService: TokenService,
   ) {}
 
   async show(externalId: string) {
@@ -128,8 +128,11 @@ export class AuthService {
         });
       }
 
-      const accessToken = this.getAccessToken(user);
-      this.setRefreshToken(user, res);
+      const accessToken = this.tokenService.generateAccessToken(
+        user.userId,
+        user.nickname,
+      );
+      this.tokenService.generateRefreshToken(user.userId, res);
 
       return {
         userData: user,
@@ -138,43 +141,5 @@ export class AuthService {
     } catch (error) {
       handlePrismaError(error);
     }
-  }
-
-  getAccessToken(user: User) {
-    return this.jwtService.sign(
-      {
-        userId: user.userId,
-        nickname: user.nickname,
-      },
-      {
-        secret: this.configService.getOrThrow<string>(
-          'JWT_ACCESS_TOKEN_SECRET',
-        ),
-        expiresIn: '5m',
-      },
-    );
-  }
-
-  setRefreshToken(user: User, res: Response) {
-    const refreshToken = this.jwtService.sign(
-      {
-        userId: user.userId,
-      },
-      {
-        secret: this.configService.getOrThrow<string>(
-          'JWT_REFRESH_TOKEN_SECRET',
-        ),
-        expiresIn: '2w',
-      },
-    );
-
-    const twoWeeksInMs = 14 * 24 * 60 * 60 * 1000;
-
-    res.cookie('refreshToken', refreshToken, {
-      httpOnly: true,
-      secure: this.configService.get<string>('SECURE_MODE') === 'production',
-      sameSite: 'strict',
-      maxAge: twoWeeksInMs,
-    });
   }
 }

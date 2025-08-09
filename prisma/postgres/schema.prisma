@@ -28,7 +28,7 @@ model Position {
 
 model User {
   userId      String   @id @default(uuid()) @map("user_id") @db.Uuid
-  nickname    String?  @unique
+  nickname    String   @unique
   description String?
   location    String?
   image       String?  @db.VarChar(255)
