@@ -4,7 +4,8 @@ import {
   NotFoundException,
   InternalServerErrorException,
 } from '@nestjs/common';
-import { Prisma } from 'generated/prisma';
+import { Prisma } from 'generated/prisma-postgres';
+// TODO: prisma-postgres로 임의 조치, mongo에 대한 것은 추후 개발 및 반영.
 
 export function handlePrismaError(error: unknown): never {
   if (error instanceof Prisma.PrismaClientKnownRequestError) {
