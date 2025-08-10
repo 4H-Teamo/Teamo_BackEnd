@@ -15,6 +15,12 @@ async function bootstrap() {
     }),
   );
 
+  app.enableCors({
+    origin: ['http://localhost:3000', 'http://devcms.ddns.net:81'],
+    methods: 'GET,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  });
+
   // swagger
   const config = new DocumentBuilder()
     .setTitle('Teamo Swagger')
