@@ -45,8 +45,9 @@ export class AuthService {
   async getKakaoAccessToken(code: string) {
     const KAKAO_RESTAPI_KEY =
       this.configService.get<string>('KAKAO_RESTAPI_KEY') || '';
-    const KAKAO_REDIRECT_URI =
-      this.configService.get<string>('KAKAO_REDIRECT_URI') || '';
+    // const KAKAO_REDIRECT_URI =
+    //   this.configService.get<string>('KAKAO_REDIRECT_URI') || '';
+    const KAKAO_REDIRECT_URI = 'http://localhost:3000/kakao/redirect';
 
     if (!KAKAO_RESTAPI_KEY || !KAKAO_REDIRECT_URI) {
       throw new InternalServerErrorException(
