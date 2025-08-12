@@ -33,7 +33,7 @@ export class UsersService {
     }
   }
 
-  // 마이페이지 - 특정 유저 조회
+  // 마이페이지/특정 유저 조회
   async show(userId: string) {
     try {
       const showUser = await this.prisma.user.findUnique({

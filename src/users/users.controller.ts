@@ -7,12 +7,14 @@ import {
   Query,
   UseGuards,
   Req,
+  Param,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UsersIndexDto } from './dto/users-index.dto';
 import { UserUpdateDto } from './dto/users-update.dto';
 import { RequestWithUser } from 'src/shared/interfaces/auth.interface';
 import { JwtAuthGuard } from 'src/auth/guards/auth.guard';
+import { UserIdDto } from './dto/users-id.dto';
 
 @Controller('users')
 export class UsersController {
@@ -27,6 +29,11 @@ export class UsersController {
   @Get('me')
   show(@Req() req: RequestWithUser) {
     return this.usersService.show(req.user.userId);
+  }
+
+  @Get(':userId')
+  showById(@Param() param: UserIdDto) {
+    return this.usersService.show(param.userId);
   }
 
   @UseGuards(JwtAuthGuard)
