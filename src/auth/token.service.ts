@@ -46,6 +46,14 @@ export class TokenService {
     });
   }
 
+  deleteRefreshToken(res: Response) {
+    res.clearCookie('refreshToken', {
+      httpOnly: true,
+      secure: this.configService.get<string>('SECURE_MODE') === 'production',
+      sameSite: 'strict',
+    });
+  }
+
   async refreshAccessToken(refreshToken: string): Promise<string> {
     try {
       const decoded: RefreshTokenPayload = this.jwtService.verify(
