@@ -7,12 +7,16 @@ import {
   Patch,
   Post,
   Query,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { PostsIndexDto } from './dto/posts-index.dto';
 import { PostCreateDto } from './dto/post-create.dto';
 import { PostIdDto } from './dto/post-id.dto';
 import { PostsUpdateDto } from './dto/posts-update.dto';
+import { JwtAuthGuard } from 'src/auth/guards/auth.guard';
+import { RequestWithUser } from '../shared/interfaces/auth.interface';
 
 @Controller('posts')
 export class PostsController {
@@ -28,20 +32,28 @@ export class PostsController {
     return this.postsService.show(param.postId);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() body: PostCreateDto) {
-    const userId = '67746ecb-5117-4ce1-846d-5433b75b651e'; //TODO : 나중에 guard로 유저아이디를 받는다.
-    return this.postsService.create(body, userId);
+  create(@Req() req: RequestWithUser, @Body() body: PostCreateDto) {
+    const user = req.user;
+    return this.postsService.create(body, user.userId);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':postId')
-  update(@Param() param: PostIdDto, @Body() body: PostsUpdateDto) {
-    return this.postsService.update(param.postId, body);
+  update(
+    @Req() req: RequestWithUser,
+    @Param() param: PostIdDto,
+    @Body() body: PostsUpdateDto,
+  ) {
+    const user = req.user;
+    return this.postsService.update(param.postId, user.userId, body);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':postId')
-  destroy(@Param() param: PostIdDto) {
-    const userId = 'cc7a79ce-3b56-4022-b098-09be5d2f482b'; //TODO : 나중에 guard로 유저아이디를 받는다.
-    return this.postsService.destroy(param.postId, userId);
+  destroy(@Req() req: RequestWithUser, @Param() param: PostIdDto) {
+    const user = req.user;
+    return this.postsService.destroy(param.postId, user.userId);
   }
 }

@@ -83,11 +83,12 @@ export class PostsService {
     }
   }
 
-  async update(postId: string, body: PostsUpdateDto) {
+  async update(postId: string, userId: string, body: PostsUpdateDto) {
     try {
       const updatePost = await this.prisma.post.update({
         where: {
           postId,
+          userId,
         },
         data: body,
       });
