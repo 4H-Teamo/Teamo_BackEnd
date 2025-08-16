@@ -1,28 +1,48 @@
-import { Controller, Post, Body, Param, Patch, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Param,
+  Patch,
+  Delete,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { CommentsService } from './comments.service';
 import { PostIdDto } from '../posts/dto/post-id.dto';
 import { CommentsCreateDto } from './dto/comments-create.dto';
 import { CommentsIdDto } from './dto/comments-id.dto';
+import { RequestWithUser } from '../shared/interfaces/auth.interface';
+import { JwtAuthGuard } from '../auth/guards/auth.guard';
 
 @Controller()
 export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post('posts/:postId/comments')
-  create(@Param() param: PostIdDto, @Body() body: CommentsCreateDto) {
-    const userId = 'cc7a79ce-3b56-4022-b098-09be5d2f482b'; //TODO : 나중에 guard로 유저아이디를 받는다.
-    return this.commentsService.create(param.postId, userId, body);
+  create(
+    @Req() req: RequestWithUser,
+    @Param() param: PostIdDto,
+    @Body() body: CommentsCreateDto,
+  ) {
+    const user = req.user;
+    return this.commentsService.create(param.postId, user.userId, body);
   }
 
   @Patch('comments/:commentId')
-  update(@Param() param: CommentsIdDto, @Body() body: CommentsCreateDto) {
-    const userId = 'cc7a79ce-3b56-4022-b098-09be5d2f482b'; //TODO : 나중에 guard로 유저아이디를 받는다.
-    return this.commentsService.update(userId, param.commentId, body);
+  update(
+    @Req() req: RequestWithUser,
+    @Param() param: CommentsIdDto,
+    @Body() body: CommentsCreateDto,
+  ) {
+    const user = req.user;
+    return this.commentsService.update(user.userId, param.commentId, body);
   }
 
   @Delete('comments/:commentId')
-  destroy(@Param() param: CommentsIdDto) {
-    const userId = 'cc7a79ce-3b56-4022-b098-09be5d2f482b'; //TODO : 나중에 guard로 유저아이디를 받는다.
-    return this.commentsService.destroy(userId, param.commentId);
+  destroy(@Req() req: RequestWithUser, @Param() param: CommentsIdDto) {
+    const user = req.user;
+    return this.commentsService.destroy(user.userId, param.commentId);
   }
 }
