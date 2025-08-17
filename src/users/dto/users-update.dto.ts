@@ -7,7 +7,6 @@ import {
   IsInt,
   IsOptional,
   IsString,
-  IsUrl,
   Max,
   Min,
 } from 'class-validator';
@@ -19,7 +18,6 @@ import {
   MaxIntValidationMessage,
   PositiveIntValidationMessage,
   StringValidationMessage,
-  UrlValidationMessage,
   WorkModeValidationMessage,
 } from 'src/shared/validators/messages/validation.messages';
 import {
@@ -120,7 +118,7 @@ export class UserUpdateDto {
   @IsOptional()
   @IsInt({ message: IntValidationMessage })
   @Type(() => Number)
-  @Min(1, { each: true, message: PositiveIntValidationMessage })
-  @Max(LastPositionId, { each: true, message: MaxIntValidationMessage })
+  @Min(1, { message: PositiveIntValidationMessage })
+  @Max(LastPositionId, { message: MaxIntValidationMessage })
   positionId?: number;
 }
