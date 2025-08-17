@@ -67,7 +67,6 @@ export class UserUpdateDto {
   })
   @IsOptional()
   @IsString({ message: StringValidationMessage })
-  @IsUrl({}, { message: UrlValidationMessage })
   github?: string;
 
   @ApiPropertyOptional({
