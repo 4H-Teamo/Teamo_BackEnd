@@ -27,6 +27,13 @@ export class PostsController {
     return this.postsService.index(query);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Get('me')
+  indexById(@Req() req: RequestWithUser) {
+    const user = req.user;
+    return this.postsService.indexById(user.userId);
+  }
+
   @Get(':postId')
   show(@Param() param: PostIdDto) {
     return this.postsService.show(param.postId);
