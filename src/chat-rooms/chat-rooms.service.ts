@@ -22,12 +22,12 @@ export class ChatRoomsService {
         return existingRoom;
       }
 
-      const newRoom = await this.prisma.chatRoom.create({
+      const createRoom = await this.prisma.chatRoom.create({
         data: {
           ...body,
         },
       });
-      return newRoom;
+      return createRoom;
     } catch (error) {
       handlePrismaError(error);
     }
