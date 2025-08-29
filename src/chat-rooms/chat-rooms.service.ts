@@ -41,19 +41,31 @@ export class ChatRoomsService {
             has: userId,
           },
         },
-        include: {
-          messages: {
-            orderBy: {
-              createdAt: 'desc',
-            },
-            take: 1,
-          },
-        },
         orderBy: {
           updatedAt: 'desc',
         },
       });
-      return chatRooms;
+
+      const roomsWithDetails = await Promise.all(
+        chatRooms.map(async (room) => {
+          const unreadCount = await this.prisma.chatMessage.count({
+            where: {
+              roomId: room.id,
+              senderId: {
+                not: userId,
+              },
+              isRead: false,
+            },
+          });
+
+          return {
+            ...room,
+            unreadCount: unreadCount,
+          };
+        }),
+      );
+
+      return roomsWithDetails;
     } catch (error) {
       handlePrismaError(error);
     }
