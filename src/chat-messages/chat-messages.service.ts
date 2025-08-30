@@ -7,12 +7,13 @@ import { handlePrismaError } from 'src/shared/validators/prisma/prisma.exception
 export class ChatMessagesService {
   constructor(private prisma: PrismaMongoService) {}
 
-  async create(data: ChatMessageCreateDto) {
+  async create(data: ChatMessageCreateDto, userId: string) {
     try {
       const message = await this.prisma.$transaction(async (tx) => {
         const createMessage = await tx.chatMessage.create({
           data: {
             ...data,
+            senderId: userId,
           },
         });
 
