@@ -17,8 +17,8 @@ import {
 export class ChatRoomCreateDto {
   @ApiProperty({
     example: [
-      'f8b1c4e6-d9a2-4b3c-8e7d-1a0f9b2c3d4e',
-      'a1b2c3d4-e5f6-7890-1234-56789abcdef0',
+      '01f9b9a2-6e26-4d42-b874-9dde92e8d2aae',
+      '1a2b3c4d-5e6f-4789-abcd-ef0123456789',
     ],
     description: '유저ID(UUID)가 담긴 배열',
   })
