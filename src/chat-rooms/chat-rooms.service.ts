@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { handlePrismaError } from 'src/shared/validators/prisma/prisma.exception';
 import { ChatRoomCreateDto } from './dto/chat-room-create.dto';
 import { PrismaMongoService } from 'src/prisma/prisma-mongo.service';
-import { ChatMessage } from 'generated/prisma-mongo';
 
 @Injectable()
 export class ChatRoomsService {
@@ -71,6 +70,7 @@ export class ChatRoomsService {
     }
   }
 
+  /* 별도로 호출하지 않고 ChatMessagesService에서 트랜잭션 처리
   async update(chatRoomId: string, messageData: ChatMessage) {
     try {
       const updatedRoom = await this.prisma.chatRoom.update({
@@ -84,6 +84,7 @@ export class ChatRoomsService {
       handlePrismaError(error);
     }
   }
+  */
 
   async destroy(chatRoomId: string) {
     try {
