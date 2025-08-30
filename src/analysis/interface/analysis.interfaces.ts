@@ -1,10 +1,10 @@
-export interface StackData {
+export interface StackDataInterface {
   stackId: number;
   stackName: string;
   count: number;
 }
 
-export interface TechStackAnalysis {
-  supply: StackData[];
-  demand: StackData[];
+export interface TechStackAnalysisInterface {
+  supply: StackDataInterface[];
+  demand: StackDataInterface[];
 }

@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { handlePrismaError } from '../shared/validators/prisma/prisma.exception';
-import { StackData, TechStackAnalysis } from './interface/analysis.interfaces';
+import { StackDataInterface, TechStackAnalysisInterface } from './interface/analysis.interfaces';
 
 @Injectable()
 export class AnalysisService {
   constructor(private prisma: PrismaService) {}
 
-  async getTechStackDemandSupply(): Promise<TechStackAnalysis> {
+  async getTechStackDemandSupply(): Promise<TechStackAnalysisInterface> {
     try {
       // Stack 정보 조회
       const stacks = await this.prisma.stack.findMany({
@@ -99,7 +99,7 @@ export class AnalysisService {
         stacks.map((stack) => [stack.stackId, stack.name]),
       );
 
-      const supply: StackData[] = Array.from(supplyCount.entries())
+      const supply: StackDataInterface[] = Array.from(supplyCount.entries())
         .map(([stackId, count]) => ({
           stackId,
           stackName: stackMap.get(stackId) || 'Unknown',
@@ -107,7 +107,7 @@ export class AnalysisService {
         }))
         .sort((a, b) => b.count - a.count);
 
-      const demand: StackData[] = Array.from(demandCount.entries())
+      const demand: StackDataInterface[] = Array.from(demandCount.entries())
         .map(([stackId, count]) => ({
           stackId,
           stackName: stackMap.get(stackId) || 'Unknown',
