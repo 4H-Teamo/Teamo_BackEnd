@@ -1,12 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsUUID } from 'class-validator';
-import { UuidValidationMessage } from '../../shared/validators/messages/validation.messages';
+import { IsMongoId } from 'class-validator';
+import { MongoIdValidationMessage } from 'src/shared/validators/messages/validation.messages';
 
 export class ChatRoomIdDto {
   @ApiProperty({
-    example: 'ABCDE-... (채팅방 ID uuid)',
+    example: '68b29e7224e1a5086dc34131',
     description: '채팅방 아이디',
   })
-  @IsUUID(4, { message: UuidValidationMessage })
+  @IsMongoId({ message: MongoIdValidationMessage })
   chatRoomId: string;
 }
