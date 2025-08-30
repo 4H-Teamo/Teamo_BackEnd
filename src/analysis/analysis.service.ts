@@ -17,6 +17,7 @@ export class AnalysisService {
       // console.log('Available stacks:', stacks);
 
       // stacks를 문자열로 조회해서 애플리케이션에서 파싱
+      // postgres 의 db타입과 일반 prisma 타입이 일치하지 않아 raw query 사용.
       const users = await this.prisma.$queryRaw<{ stacks: string }[]>`
         SELECT stacks::text as stacks
         FROM "User" 
