@@ -17,6 +17,14 @@ export const ArrayEmptyValidationMessage = (args: ValidationArguments) => {
   return `${args.property} 배열은 비어 있을 수 없습니다.`;
 };
 
+export const ArrayMinSizeValidationMessage = (args: ValidationArguments) => {
+  return `배열의 최소 길이는 ${args.constraints[0]} 이상이어야 합니다.`;
+};
+
+export const ArrayMaxSizeValidationMessage = (args: ValidationArguments) => {
+  return `배열의 최대 길이는 ${args.constraints[0]} 이하여야 합니다.`;
+};
+
 // 숫자
 export const IntValidationMessage = (args: ValidationArguments) => {
   return `${args.property}에는 정수가 들어갑니다.`;
@@ -37,6 +45,10 @@ export const StringValidationMessage = (args: ValidationArguments) => {
 
 export const UuidValidationMessage = (args: ValidationArguments) => {
   return `${args.property}는 uuid 문자열이 들어가야 합니다.`;
+};
+
+export const MongoIdValidationMessage = (args: ValidationArguments) => {
+  return `${args.property}는 MongoDB ObjectId 문자열이 들어가야 합니다.`;
 };
 
 // 날짜

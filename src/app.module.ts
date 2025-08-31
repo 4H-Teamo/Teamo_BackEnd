@@ -8,6 +8,8 @@ import { PostsModule } from './posts/posts.module';
 import { UsersModule } from './users/users.module';
 import { CommentsModule } from './comments/comments.module';
 import { NoticesModule } from './notices/notices.module';
+import { ChatRoomsModule } from './chat-rooms/chat-rooms.module';
+import { ChatMessagesModule } from './chat-messages/chat-messages.module';
 
 @Module({
   imports: [
@@ -20,6 +22,8 @@ import { NoticesModule } from './notices/notices.module';
     UsersModule,
     CommentsModule,
     NoticesModule,
+    ChatRoomsModule,
+    ChatMessagesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
