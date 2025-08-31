@@ -7,13 +7,13 @@ import { handlePrismaError } from 'src/shared/validators/prisma/prisma.exception
 export class ChatMessagesService {
   constructor(private prisma: PrismaMongoService) {}
 
-  async create(data: ChatMessageCreateDto, userId: string) {
+  async create(data: ChatMessageCreateDto) {
     try {
       const message = await this.prisma.$transaction(async (tx) => {
         const createMessage = await tx.chatMessage.create({
           data: {
             ...data,
-            senderId: userId,
+            senderId: data.userId,
           },
         });
 
@@ -44,6 +44,24 @@ export class ChatMessagesService {
         },
       });
       return messages;
+    } catch (error) {
+      handlePrismaError(error);
+    }
+  }
+
+  async update(chatRoomId: string, userId: string) {
+    try {
+      const result = await this.prisma.chatMessage.updateMany({
+        where: {
+          roomId: chatRoomId,
+          isRead: false,
+          senderId: { not: userId },
+        },
+        data: {
+          isRead: true,
+        },
+      });
+      return result;
     } catch (error) {
       handlePrismaError(error);
     }

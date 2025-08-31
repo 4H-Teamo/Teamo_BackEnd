@@ -1,8 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsMongoId, IsString } from 'class-validator';
+import { IsMongoId, IsString, IsUUID } from 'class-validator';
 import {
   MongoIdValidationMessage,
   StringValidationMessage,
+  UuidValidationMessage,
 } from 'src/shared/validators/messages/validation.messages';
 
 export class ChatMessageCreateDto {
@@ -19,4 +20,11 @@ export class ChatMessageCreateDto {
   })
   @IsString({ message: StringValidationMessage })
   content: string;
+
+  @ApiProperty({
+    example: '123e4567-e89b-12d3-a456-426614174000',
+    description: '메세지 작성자 아이디',
+  })
+  @IsUUID(4, { message: UuidValidationMessage })
+  userId: string;
 }
