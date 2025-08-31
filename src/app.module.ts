@@ -10,6 +10,7 @@ import { CommentsModule } from './comments/comments.module';
 import { NoticesModule } from './notices/notices.module';
 import { ChatRoomsModule } from './chat-rooms/chat-rooms.module';
 import { ChatMessagesModule } from './chat-messages/chat-messages.module';
+import { ChatGateway } from './chat/chat.gateway';
 
 @Module({
   imports: [
@@ -26,6 +27,6 @@ import { ChatMessagesModule } from './chat-messages/chat-messages.module';
     ChatMessagesModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, ChatGateway],
 })
 export class AppModule {}
