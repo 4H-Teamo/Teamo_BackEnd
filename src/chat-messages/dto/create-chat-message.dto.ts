@@ -26,5 +26,5 @@ export class ChatMessageCreateDto {
     description: '메세지 작성자 아이디',
   })
   @IsUUID(4, { message: UuidValidationMessage })
-  userId: string;
+  senderId: string;
 }

@@ -13,7 +13,6 @@ export class ChatMessagesService {
         const createMessage = await tx.chatMessage.create({
           data: {
             ...data,
-            senderId: data.userId,
           },
         });
 
