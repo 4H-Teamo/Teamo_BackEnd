@@ -35,18 +35,9 @@ export class ChatGateway {
     @MessageBody() payload: { roomId: string },
     @ConnectedSocket() client: Socket,
   ) {
-    try {
-      await client.join(payload.roomId);
-      console.log(`client: ${client.id} / roomId: ${payload.roomId}`);
-
-      // 해당 방의 기존 메시지 불러오기
-      const messages = await this.chatMessagesService.index(payload.roomId);
-      client.emit('joinedRoom', { priviousMessages: messages });
-      return returnResult('success', 200, '채팅방 참여에 성공했습니다.');
-    } catch (error) {
-      console.error('기존 메시지 불러오기 중 에러 발생', error);
-      return returnResult('fail', 500, '채팅방 참여에 실패했습니다.');
-    }
+    await client.join(payload.roomId);
+    console.log(`client: ${client.id} / roomId: ${payload.roomId}`);
+    return returnResult('success', 200, '채팅방 참여에 성공했습니다.');
   }
 
   /* 채팅 모달을 닫으면 자동으로 disconnect => 추후 필요하면 사용

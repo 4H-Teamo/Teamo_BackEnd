@@ -15,17 +15,17 @@ export class ChatMessagesController {
     const user = req.user;
     return this.chatMessagesService.create(body, user.userId);
   }
+  */
 
   @UseGuards(JwtAuthGuard)
   @Get(':chatRoomId')
   index(@Param() param: ChatRoomIdDto) {
     return this.chatMessagesService.index(param.chatRoomId);
   }
-  */
 
   @UseGuards(JwtAuthGuard)
   @Get(':chatRoomId')
-  index(@Param() param: ChatRoomIdDto, @Req() req: RequestWithUser) {
+  update(@Param() param: ChatRoomIdDto, @Req() req: RequestWithUser) {
     const user = req.user;
     return this.chatMessagesService.update(param.chatRoomId, user.userId);
   }
