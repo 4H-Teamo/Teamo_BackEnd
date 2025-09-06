@@ -29,6 +29,22 @@ export class PostsService {
     }
   }
 
+  async indexById(userId: string) {
+    try {
+      const posts = await this.prisma.post.findMany({
+        where: {
+          userId,
+        },
+        orderBy: {
+          updatedAt: 'desc',
+        },
+      });
+      return posts;
+    } catch (error) {
+      handlePrismaError(error);
+    }
+  }
+
   async show(postId: string) {
     try {
       //updatedAt을 빼고 전달
