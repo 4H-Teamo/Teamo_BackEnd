@@ -11,6 +11,7 @@ import { NoticesModule } from './notices/notices.module';
 import { ChatRoomsModule } from './chat-rooms/chat-rooms.module';
 import { ChatMessagesModule } from './chat-messages/chat-messages.module';
 import { ChatGateway } from './chat/chat.gateway';
+import { AnalysisModule } from './analysis/analysis.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { ChatGateway } from './chat/chat.gateway';
     UsersModule,
     CommentsModule,
     NoticesModule,
+    AnalysisModule,
     ChatRoomsModule,
     ChatMessagesModule,
   ],
