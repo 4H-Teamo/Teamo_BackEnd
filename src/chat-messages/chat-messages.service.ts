@@ -47,4 +47,22 @@ export class ChatMessagesService {
       handlePrismaError(error);
     }
   }
+
+  async update(chatRoomId: string, userId: string) {
+    try {
+      const result = await this.prisma.chatMessage.updateMany({
+        where: {
+          roomId: chatRoomId,
+          isRead: false,
+          senderId: { not: userId },
+        },
+        data: {
+          isRead: true,
+        },
+      });
+      return result;
+    } catch (error) {
+      handlePrismaError(error);
+    }
+  }
 }
