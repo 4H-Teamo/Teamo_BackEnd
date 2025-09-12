@@ -31,7 +31,7 @@ async function bootstrap() {
     .setTitle('Teamo Swagger')
     .setDescription('Teamo Apis')
     .setVersion('1.0')
-    .addServer('http://devcms.ddns.net:81/api')
+    .addServer('http://211.230.62.32:81/api')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
